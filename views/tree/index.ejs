@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<title>Fancytree - Example</title>
+
+	<script src="/javascripts/jquery.js"></script>
+	<script src="/javascripts/jquery-ui.custom.js"></script>
+
+	<link href="/stylesheets/ui.fancytree.css" rel="stylesheet">
+	<script src="/javascripts/jquery.fancytree.js"></script>
+
+	<!-- End_Exclude -->
+	
+	<script type="text/javascript">
+		
+		$(function(){
+			var FT = $.ui.fancytree;
+
+			// attach to instance 1 and 3
+			$("#tree").fancytree({
+				checkbox: true,
+				select: function(event, data) {
+					
+					console.log(' node '+data.node.title+' import '+data.node.selected+' data ',data.node.data);
+					//data.node.data['import']=data.node.selected;
+					
+				},
+				activate: function(event, data){
+					var node = data.node;
+					FT.debug("activate: event=", event, ", data=", data);
+					if(!$.isEmptyObject(node.data)){
+						alert("custom node data: " + JSON.stringify(node.data));
+					}
+				},
+				lazyLoad: function(event, data){
+					// we can't `return` values from an event handler, so we
+					// pass the result as `data.result` attribute:
+					data.result = {url: "ajax-sub2.json"};
+				}
+			// }).on("fancytreeactivate", function(event, data){
+			// 	$.ui.fancytree.debug("fancytreeactivate: event=", event, ", data=", data);
+			// 	return false;
+			});
+		});
+	
+		function selecionaProj(){
+			var items = document.getElementById('items');
+			//console.log(' items '+items);
+			document.getElementById('nameID').innerHTML = items;
+			var form = document.getElementById('treelist');
+			form.submit();
+		}
+
+		function envForm(){
+			var tree = $("#tree").fancytree("getTree");
+			var d = tree.toDict(true);
+			//console.log((JSON.stringify(d)));
+			document.getElementById('dataSourceID').value = JSON.stringify(d);
+			document.getElementById('persisForm').submit();
+		}
+	
+	</script>	
+</head>
+<body>
+<br/>
+
+	<form id="treelist" action="/treelist" method="post">
+		<input type="hidden" id="nameID" name="test" value="xxxtest"/>
+		
+		<select id="items" name="items" onchange="selecionaProj()">
+		  <option value="a">a</option>
+		  <option value="b">b</option>
+		  <option value="c">c</option>
+		  <option value="d">d</option>
+		</select>
+		
+		<select id="items2" name="items2" >
+		  <option value="e">e</option>
+		  <option value="f">f</option>
+		  <option value="g">g</option>
+		  <option value="h">h</option>
+		  
+		</select>
+
+	</form>
+
+	<br/>
+	<br/>
+	<br/>
+	
+	<form id="persisForm" action="tree" method="post" >
+	
+		<input type="hidden" id="dataSourceID" name="dataSource" />
+		<div id="tree" data-type="json">
+			<%= dataSource %>
+		</div>
+		<input type="button" value="OK"  onclick="envForm()"></imput>
+		
+	</form>
+...
+</body>
+</html>
