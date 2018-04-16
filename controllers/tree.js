@@ -1,39 +1,11 @@
+const treeModels = require('../models/tree');
 
-var dataSource = {"foo": "bazbaz", "children":
-[
-	{"title": "node A", "folder": true, "expanded": true,
-		"children":[
-			{"title": "node B", "folder": true, "expanded": true,
-				"children":[
-					{"title": "node C", "folder": true, "expanded": true,
-						"children":[
-							{"title": "node D", "folder": true, "expanded": true,
-								"children":[
-									{"title": "node E1", "folder": false, "expanded": true,
-										"detalhes":[{"a":1,"b":"a", "c":"b"}, {"a":2,"b":"a", "c":"b"}, {"a":3,"b":"a", "c":"b"}]
-									},
-									{"title": "node E2", "folder": false, "expanded": true,
-										"detalhes":[{"a":1,"b":"a", "c":"b"}]
-									},
-									{"title": "node E3", "folder": false, "expanded": true,
-										"detalhes":[{"a":1,"b":"a", "c":"b"}]
-									}
-								]
-							}
-						]
-					}		
-				]
-			}
-		]
-	}
-]};
-
-dataSource = JSON.stringify(dataSource);
+dataSource = JSON.stringify(treeModels.dataSource);
 
 const treeview = function(req, res, next){
 	
 	console.log("tree view")
-	res.render('tree/index', { "title": "Tree", dataSource : dataSource } );
+	res.render('tree/index', { "title": "Tree", dataSource : dataSource, items2: [1,2,3,4,5]} );
 	
 };
 
@@ -46,9 +18,9 @@ const treeupdate = function(req, res, next){
 	
 	console.log(' item: ',dataSourceJson);
 
-	tree(dataSourceJson.children);
+	treeModels.printTree(dataSourceJson.children);
 	
-	res.render('tree/index', { "title": "Tree", dataSource : dataSourceItems } );
+	res.render('tree/index', { "title": "Tree", dataSource : dataSourceItems, items2: [1,2,3,4,5] } );
 	
 };
 
@@ -56,39 +28,15 @@ const list = function(req, res, next) {
 	
 	console.log(' list ');
 
-	var items = req.body.items
+	var itemSelected = req.body.items
+	
+	var listItem2 = treeModels.selectItem(itemSelected);
+	
 	var items2 = req.body.items2
 	
-	console.log('testimp items '+items+' items2: '+items2);
+	console.log('testimp items '+itemSelected+' items2: '+items2+' list items2 '+listItem2);
 	
-  res.render('tree/index', { "title": "Tree", dataSource : dataSource } );
-}
-
-function tree(itemJson){
-		
-	for(let i=0;i<itemJson.length; i++){
-	
-		console.log(' item tree title: '+itemJson[i].title);
-		
-		if(itemJson[i].children){
-			tree(itemJson[i].children);	
-		}
-		
-		if(itemJson[i].selected){
-			console.log(' selected '+itemJson[i].title);
-			console.log(' item tree title: '+itemJson[i].title+' data ',itemJson[i].data);
-			
-			if(itemJson[i].detalhes!=undefined && itemJson[i].detalhes.length>0){
-				var detalhes = itemJson[i].detalhes;
-				console.log(' item tree detalhes: '+itemJson[i].detalhes);
-				
-				for(let j=0;i<detalhes.length; j++){
-					consolo.log(' detalhes ',detalhes[j]);
-				}
-			}
-		}
-	}
-	
+  res.render('tree/index', { "title": "Tree", dataSource : dataSource, items2: listItem2, items: itemSelected} );
 }
 
 module.exports = {
