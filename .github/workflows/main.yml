@@ -6,8 +6,17 @@ on:
     branches: [master]
 
 jobs:
+
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/labeler@v4
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Teste de execucao
-        run: echo Validacao de execucao!
+        run: |
+          echo Validacao de execucao!
+          echo token ${{ secrets.GITHUB_TOKEN }}
