@@ -6,8 +6,8 @@ on:
     branches: [main]
 
 jobs:
-  e2e-tests:
+  build:
     runs-on: ubuntu-latest
     steps:
-      -name: Teste de execução
-      run: echo Validação de execução!
+      - name: Teste de execução
+        run: echo Validação de execução!
