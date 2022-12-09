@@ -8,5 +8,6 @@ on:
 jobs:
   e2e-tests:
     runs-on: ubuntu-latest
-    -name: Teste de execução
-    run: echo Validação de execução!
+    steps:
+      -name: Teste de execução
+      run: echo Validação de execução!
