@@ -1,0 +1,13 @@
+name: Pull request labeler
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Teste de execucao
+        run: echo Validacao de execucao!
