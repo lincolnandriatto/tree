@@ -9,5 +9,5 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Teste de execução
+      - name: Teste de execucao
         run: echo Validacao de execucao!
